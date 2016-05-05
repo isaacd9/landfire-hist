@@ -1,8 +1,11 @@
 #!/usr/bin/python
 
 import sys
-import gdal
+import os
+import os.path as path
 import argparse
+
+import gdal
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -17,12 +20,14 @@ def plot_hist(hist, filename, sort_by_values=False, save=False):
 
     plt.xlabel('Fuels')
     plt.ylabel('Percent')
-    plt.title(filename + ' fuels by amount')
+
+    plt.title(filename + ' fuels')
+
     plt.xticks(
             np.arange(
             len(list(hist))) + .10,
             ordered_keys
-            )
+    )
 
     plt.bar(
             range(len(hist)),
@@ -33,7 +38,10 @@ def plot_hist(hist, filename, sort_by_values=False, save=False):
     #plt.set_ticks(np.arange(0, len(list(hist)), 1))
 
     if save:
-        plt.savefig(filename + '.hist.png')
+        out_path = path.join(os.getcwd(), path.basename(filename) + '.plot.png')
+        print "Writing file to " + out_path
+
+        plt.savefig(out_path)
 
     else:
         plt.show()
